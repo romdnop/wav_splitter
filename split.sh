@@ -9,35 +9,34 @@ OUTPUT_DIR="tracks"
 mkdir -p "$OUTPUT_DIR"
 
 # Read tracklist and process it
-PREV_TIME=0
-INDEX=1
-FIRST_TRACK=1
-
-# Extract timestamps and names from the tracklist
-awk 'NR>1 {print substr($0, 1, 5), substr($0, 7)}' "$TRACKLIST_FILE" | while read -r TIME TITLE; do
-    # Convert timestamp to seconds
-    IFS=':' read -r MIN SEC <<< "$TIME"
-    START_TIME=$((MIN * 60 + SEC))
+while read -r START_TIME END_TIME TITLE; do
+    # Convert timestamps to decimal format by removing leading zeros manually
+    START_MIN=$(echo "$START_TIME" | cut -d':' -f1 | sed 's/^0*//')
+    START_SEC=$(echo "$START_TIME" | cut -d':' -f2 | sed 's/^0*//')
+    END_MIN=$(echo "$END_TIME" | cut -d':' -f1 | sed 's/^0*//')
+    END_SEC=$(echo "$END_TIME" | cut -d':' -f2 | sed 's/^0*//')
+    
+    # Handle edge case where numbers become empty (i.e., "00" turns into empty)
+    START_MIN=${START_MIN:-0}
+    START_SEC=${START_SEC:-0}
+    END_MIN=${END_MIN:-0}
+    END_SEC=${END_SEC:-0}
+    
+    START_SEC_TOTAL=$((START_MIN * 60 + $START_SEC))
+    END_SEC_TOTAL=$((END_MIN * 60 + $END_SEC))
+    DURATION=$((END_SEC_TOTAL - $START_SEC_TOTAL))
     
     # Ensure TITLE is safe for filenames
-    SAFE_TITLE=$(echo "$TITLE" | tr -cd '[:alnum:]_-')
+    #SAFE_TITLE=$(echo "$TITLE" | tr -cd '[:alnum:]_-')
     
-    # If not the first track, determine duration of previous track
-    if [[ $FIRST_TRACK -eq 0 ]]; then
-        DURATION=$((START_TIME - PREV_TIME))
-        #ffmpeg -i "$INPUT_FILE" -ss "$PREV_TIME" -t "$DURATION" -c copy "$OUTPUT_DIR/${PREV_SAFE_TITLE}.wav"
-    else
-        FIRST_TRACK=0
-    fi
-    
-    PREV_TIME=$START_TIME
-    PREV_TITLE="$TITLE"
-    PREV_SAFE_TITLE="$SAFE_TITLE"
-    INDEX=$((INDEX + 1))
+    # Handle case where SAFE_TITLE is empty
+    #if [[ -z "$SAFE_TITLE" ]]; then
+    #    SAFE_TITLE="track_$START_SEC_TOTAL"
+    #fi
+    echo "Processing track $TITLE. Start: $START_SEC_TOTAL Stop: $END_SEC_TOTAL"
+    # Extract the track using ffmpeg
+    ffmpeg -y -nostdin -i "${INPUT_FILE}" -ss "${START_SEC_TOTAL}" -t "${DURATION}" -c copy "$OUTPUT_DIR/${TITLE}.wav" &>/dev/null
 
-done
-
-# Handle last track (from last start time to the end)
-#ffmpeg -i "$INPUT_FILE" -ss "$PREV_TIME" -c copy "$OUTPUT_DIR/${PREV_SAFE_TITLE}.wav"
+done < "$TRACKLIST_FILE"
 
 echo "Tracks have been successfully split and saved in $OUTPUT_DIR"

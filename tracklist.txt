@@ -1,19 +1,19 @@
-00:00 Mercury
-04:00 Saturn
-08:00 Venus
-11:54 Jupiter
-15:55 Mars
-19:07 Earth
-22:24 Uranus
-25:04 Pluto
-29:05 Neptune
-31:38 Mercury_II
-35:38 Saturn_II
-39:35 Venus_II
-43:04 Jupiter_II
-46:11 Mars_II
-47:53 Earth_II
-49:31 Uranus_II
-52:46 Pluto_II
-54:27 Neptune_II
-57:59 Outro
+00:00 03:59 Mercury
+04:00 07:59 Saturn
+08:00 11:53 Venus
+11:54 15:54 Jupiter
+15:55 19:06 Mars
+19:07 22:23 Earth
+22:24 25:03 Uranus
+25:04 29:04 Pluto
+29:05 31:37 Neptune
+31:38 35:37 Mercury_II
+35:38 39:34 Saturn_II
+39:35 43:04 Venus_II
+43:04 46:10 Jupiter_II
+46:11 47:52 Mars_II
+47:53 49:30 Earth_II
+49:31 52:45 Uranus_II
+52:46 54:26 Pluto_II
+54:27 57:58 Neptune_II
+57:59 59:59 Outro
