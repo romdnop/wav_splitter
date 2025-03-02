@@ -6,13 +6,15 @@ A simple bash script to cut a monolithic \*.wav file into separate tracks with t
 
 - Make sure that the **tracklist.txt** is present and has the following format:
 
-00:00 03:59 Mercury  
-04:00 07:59 Saturn  
-08:00 11:53 Venus  
-11:54 15:54 Jupiter  
-15:55 19:06 Mars  
-19:07 22:23 Earth  
+```
+00:00 03:59 Mercury
+04:00 07:59 Saturn
+08:00 11:53 Venus
+11:54 15:54 Jupiter
+15:55 19:06 Mars
+19:07 22:23 Earth
 ...
+```
 
 > Note: the **tracklist.txt** file must have an empty line at the end
 
@@ -20,6 +22,13 @@ A simple bash script to cut a monolithic \*.wav file into separate tracks with t
 - The same applies to **TRACKLIST_FILE** variable and **OUTPUT_DIR**
 
 ---
+
+# Run
+
+```
+chmod +x split.sh
+./split.sh
+```
 
 # Dependencies
 
